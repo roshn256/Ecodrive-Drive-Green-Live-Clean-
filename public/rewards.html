@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoDrive - Rewards</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">EcoDrive</a>
+        <div class="nav-links">
+            <a href="calculator.html">Calculator</a>
+            <a href="learn.html">Learn</a>
+            <a href="about.html">About</a>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="rewards-container">
+        <h2>Your Token Balance: <span id="balance">1230</span></h2>
+        
+        <div class="reward-grid">
+            <div class="reward-card">
+                <div class="image-container">
+                    <img src="images/image1.1.jpeg" alt="Reusable Bags">
+                </div>
+                <h3>Reusable Grocery Bags Set</h3>
+                <p>100 Tokens</p>
+                <button onclick="redeem(100)">Redeem</button>
+            </div>
+
+            <div class="reward-card">
+                <div class="image-container">
+                    <img src="images/image1.2.webp" alt="Bamboo Toothbrushes">
+                </div>
+                <h3>Bamboo Toothbrush Pack</h3>
+                <p>200 Tokens</p>
+                <button onclick="redeem(200)">Redeem</button>
+            </div>
+
+            <div class="reward-card">
+                <div class="image-container">
+                    <img src="images/image1.3.jpeg" alt="LED Bulbs">
+                </div>
+                <h3>Energy Saving LED Bulbs</h3>
+                <p>300 Tokens</p>
+                <button onclick="redeem(300)">Redeem</button>
+            </div>
+
+            <div class="reward-card">
+                <div class="image-container">
+                    <img src="images/image1.4.webp" alt="Stainless Bottle">
+                </div>
+                <h3>Stainless Steel Water Bottle</h3>
+                <p>400 Tokens</p>
+                <button onclick="redeem(400)">Redeem</button>
+            </div>
+
+            <div class="reward-card">
+                <div class="image-container">
+                    <img src="images/image1.5.jpg" alt="Compost Bin">
+                </div>
+                <h3>Home Compost Bin</h3>
+                <p>600 Tokens</p>
+                <button onclick="redeem(600)">Redeem</button>
+            </div>
+
+            <div class="reward-card">
+                <div class="image-container">
+                    <img src="images/image1.6.jpg" alt="Solar Charger">
+                </div>
+                <h3>Portable Solar Charger</h3>
+                <p>800 Tokens</p>
+                <button onclick="redeem(800)">Redeem</button>
+            </div>
+
+            <div class="reward-card">
+                <div class="image-container">
+                    <img src="images/image1.7.jpg" alt="Eco Fridge">
+                </div>
+                <h3>Energy Efficient Fridge</h3>
+                <p>1000 Tokens</p>
+                <button onclick="redeem(1000)">Redeem</button>
+            </div>
+
+            <div class="reward-card">
+                <div class="image-container">
+                    <img src="images/image1.8.jpg" alt="Cleaning Kit">
+                </div>
+                <h3>Eco Cleaning Kit</h3>
+                <p>1500 Tokens</p>
+                <button onclick="redeem(1500)">Redeem</button>
+            </div>
+
+            <div class="reward-card">
+                <div class="image-container">
+                    <img src="images/image1.9.jpg" alt="Solar Panel">
+                </div>
+                <h3>Solar Panel Kit</h3>
+                <p>5000 Tokens</p>
+                <button onclick="redeem(5000)">Redeem</button>
+            </div>
+
+            <div class="reward-card">
+                <div class="image-container">
+                    <img src="images/image1.10.jpeg" alt="EV Charger">
+                </div>
+                <h3>Home EV Charging Station</h3>
+                <p>10000 Tokens</p>
+                <button onclick="redeem(10000)">Redeem</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

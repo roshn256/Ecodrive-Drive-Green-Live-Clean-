@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoDrive - Carbon Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { background: #f4f4f4; font-family: 'Arial', sans-serif; }
+        .navbar { background: #2E7D32; }
+        .navbar-brand, .nav-link, .btn-logout { color: white; font-weight: bold; }
+        .calculator-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+        #map { height: 400px; width: 100%; border-radius: 10px; margin-bottom: 1.5rem; }
+        .result-box { margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 10px; }
+        .form-group { margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">EcoDrive</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="rewards.html">Rewards</a></li>
+                    <li class="nav-item"><a class="nav-link" href="learn.html">Learn</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><button class="btn btn-danger btn-logout" onclick="logout()">Logout</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Calculator Container -->
+    <div class="calculator-container">
+        <h2><i class="fas fa-calculator"></i> Carbon Footprint Calculator</h2>
+        <div id="map"></div>
+        
+        <div class="form-group">
+            <input type="text" id="start" class="form-control" placeholder="🏁 Start Location">
+        </div>
+        <div class="form-group">
+            <input type="text" id="end" class="form-control" placeholder="📍 Destination">
+        </div>
+        
+        <div class="row g-3">
+            <div class="col-md-6">
+                <select id="vehicle" class="form-select">
+                    <option value="petrol">⛽ Petrol Car</option>
+                    <option value="diesel">⛽ Diesel Car</option>
+                    <option value="electric">🔌 Electric Vehicle</option>
+                    <option value="bike">🚲 Bicycle</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <input type="number" id="engineCC" class="form-control" placeholder="🚗 Engine CC">
+            </div>
+        </div>
+
+        <div class="row g-3 mt-2">
+            <div class="col-md-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="acStatus">
+                    <label class="form-check-label" for="acStatus">❄️ AC On</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <select id="load" class="form-select">
+                    <option value="1">👤 Light Load (1 person)</option>
+                    <option value="2">👥 Medium Load (2-3 people)</option>
+                    <option value="3">👨👩👧👦 Heavy Load (4+ people)</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn btn-success w-100 mt-3" onclick="calculate()">Calculate Emissions</button>
+        
+        <div class="result-box">
+            <p>📏 Distance: <span id="distance">0</span> km</p>
+            <p>🌍 CO₂ Emissions: <span id="emissions">0</span> kg</p>
+            <p>🪙 Tokens: <span id="tokens">0</span></p>
+            <div class="d-grid gap-2">
+                <button id="gainTokens" class="btn btn-success">Gain Tokens</button>
+                <button id="redeemTokens" class="btn btn-danger">Redeem Tokens</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Emission factors (kg CO2 per km)
+        const emissionFactors = {
+            petrol: 0.18,   // Base for 1000cc
+            diesel: 0.16,    // Base for 1000cc
+            electric: 0.05,
+            bike: 0
+        };
+
+        let tokens = localStorage.getItem('ecoTokens') || 0;
+        document.getElementById('tokens').textContent = tokens;
+
+        // Initialize Map
+        const map = L.map('map').setView([10.8505, 76.2711], 8);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        function calculate() {
+            const vehicleType = document.getElementById('vehicle').value;
+            const engineCC = parseFloat(document.getElementById('engineCC').value) || 1000;
+            const acOn = document.getElementById('acStatus').checked;
+            const load = parseInt(document.getElementById('load').value);
+            
+            // Simulated distance calculation (replace with actual routing logic)
+            const distance = Math.random() * 100 + 20; // Random distance between 20-120 km
+            
+            // Calculate emissions
+            let emissions = emissionFactors[vehicleType] * distance;
+            
+            // Adjustments
+            if (vehicleType === 'petrol' || vehicleType === 'diesel') {
+                // Engine size impact (linear scaling)
+                emissions *= (engineCC / 1000);
+                
+                // AC impact (20% increase)
+                if (acOn) emissions *= 1.2;
+                
+                // Load impact (10% per load level)
+                emissions *= (1 + (load * 0.1));
+            }
+
+            // Update display
+            document.getElementById('distance').textContent = distance.toFixed(2);
+            document.getElementById('emissions').textContent = emissions.toFixed(2);
+        }
+
+        function updateTokens(action) {
+            const emissions = parseFloat(document.getElementById('emissions').textContent);
+            
+            if (action === 'gain') {
+                tokens = Math.max(0, tokens + Math.floor(100 - emissions));
+            } else {
+                tokens = Math.max(0, tokens - Math.floor(emissions));
+            }
+            
+            localStorage.setItem('ecoTokens', tokens);
+            document.getElementById('tokens').textContent = tokens;
+        }
+
+        document.getElementById('gainTokens').addEventListener('click', () => updateTokens('gain'));
+        document.getElementById('redeemTokens').addEventListener('click', () => updateTokens('redeem'));
+
+        function logout() {
+            localStorage.removeItem('ecoTokens');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
